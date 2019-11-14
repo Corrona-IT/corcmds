@@ -1,5 +1,5 @@
 * version of stata.toc for corrona utilities
-v 4
+v 3
 * packages title 
 d Corrona utilities
 d R Raciborski, R Medeiros, N Guo
