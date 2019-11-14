@@ -7,9 +7,5 @@ d Distribution-Date: 20191114
 d 
 * available packages
 p corrona directory of Corrona-specific commands and help
-* p corcf compare two datasets
-* p cordd create data dictionary in Excel
-* p corset set data properties for cortable
-* p cortable create automated tables in Word
 * end
 e 
