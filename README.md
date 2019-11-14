@@ -19,7 +19,7 @@ configure your installation settings.</p>
 
 <p>which should show you</p>
 <pre>
-from    ""
+from    "https://raw.githubusercontent.com/Corrona-IT/corcmds/master"
 ado     c:\ado\plus\
 other   (current directory)
 </pre>
@@ -29,7 +29,7 @@ other   (current directory)
 The Corrona commands are installed using the <b>net</b> command. 
 You set the install location by typing
 
-<code>. net from "" </code>
+<code>. net from "https://raw.githubusercontent.com/Corrona-IT/corcmds/master" </code>
 
 You set the location for installing the <b>corrona</b> commands by typing
 
