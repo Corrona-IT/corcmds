@@ -26,14 +26,18 @@ other   (current directory)
 
 <i>Getting commands</i>
 
+You set the location for installing the <b>corrona</b> commands by typing
+
+<code>. net set ado PLUS</code>
+
 The Corrona commands are installed using the <b>net</b> command. 
 You set the install location by typing
 
 <code>. net from "https://raw.githubusercontent.com/Corrona-IT/corcmds/master" </code>
 
-You set the location for installing the <b>corrona</b> commands by typing
+Install the full package of Corrona commands by typing
 
-<code>. net set ado PLUS</code>
+<code>. net install corrona</code>
 
 Short descriptions of each <b>corrona</b> command are displayed below. To view
 a complete description, including the command's help file, you can click the
