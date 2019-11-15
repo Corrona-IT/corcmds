@@ -64,7 +64,7 @@ command periodically.
 <ul>
 <item><b>corcf</b>: Compare values of variables between two datasets</item>
   
-<item><b>corset</b>: Set properties</item>
+<item><b>corset</b>: Set properties of variables for tabling</item>
 </ul>
 
 <p><i>Tables</i></p>
