@@ -90,7 +90,7 @@ command periodically.
 All <b>corrona</h2> commands come with help files. If you run into a specific problem, 
 see the <i>Troubleshooting</i> section below. If you encounter a bug that is not already 
 described, please report it by creating a 
-<a href=https://github.com/Corrona-IT/corcmds/master/issues>new issue</a>.
+<a href=https://github.com/Corrona-IT/corcmds/issues>new issue</a>.
 
 <h2>Troubleshooting</h2>
 
