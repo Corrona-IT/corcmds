@@ -87,7 +87,7 @@ command periodically.
 
 <h2>Getting help</h2>
 
-All <b>corrona</h2> commands come with help files. If you run into a specific problem, 
+All <b>corrona</b> commands come with help files. If you run into a specific problem, 
 see the <i>Troubleshooting</i> section below. If you encounter a bug that is not already 
 described, please report it by creating a 
 <a href=https://github.com/Corrona-IT/corcmds/issues>new issue</a>.
@@ -128,11 +128,10 @@ described, please report it by creating a
     well as your user name. Attach the log that is created by the following
     to the issue that you create.
     <pre>
-    . log using myinfo.txt, text replace
-    . ls ~/*Corrona*
-    . display "`c(username)'"
-    . log close
-    </pre>
+log using myinfo.txt, text replace
+ls ~/*Corrona*
+display "`c(username)'"
+log close</pre>
    </li>
  </ol>
  
