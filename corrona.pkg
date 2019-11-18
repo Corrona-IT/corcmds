@@ -4,11 +4,20 @@ d corrona.  Directory of Corrona-specific commands and help
 d Distribution-Date: 20191118
 f corrona.sthlp
 f lcorrona.mlib
-f corcf.ado
+*
 f corcf.sthlp
-f cordd.ado
+f corcf.ado
+f descsave.sthlp
+f descsave.ado
+*
 f cordd.sthlp
-f corset.ado
+f cordd.ado
+*
 f corset.sthlp
-f cortable.ado
+f corset.ado
+*
 f cortable.sthlp
+f cortable.ado
+f cortable_counts.ado
+f cortable_split.ado
+f cortable_vartype.ado
