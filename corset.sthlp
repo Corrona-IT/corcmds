@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0.0  22aug2019}{...}
+{* *! version 1.1.0  18nov2019}{...}
 {vieweralsosee "cortable" "help cortable"}{...}
 {viewerjumpto "Syntax" "corset##syntax"}{...}
 {viewerjumpto "Description" "corset##description"}{...}
@@ -184,13 +184,12 @@ the following defaults are used:
 {cmd:binary} is assigned to all variables with only values 0 and 1 or missing.
 
 {phang2}
-{cmd:categorical} is assigned to all variables with between two and twenty 
+{cmd:categorical} is assigned to all variables with between two and ten 
 unique values. Missing values are ignored when counting unique values.
 
 {phang2}
-{cmd:continuous} is assigned to all variables with more than twenty 
-unique values or if the value label {cmd:cmiss} has been applied. 
-Missing values are ignored when counting unique values.
+{cmd:continuous} is assigned to all variables with more than ten 
+unique values. Missing values are ignored when counting unique values.
 
 {pstd}
 By specifying the {opt verbose} option with {cmd:corset greport}, you also are

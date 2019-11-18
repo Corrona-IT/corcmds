@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0.3  15nov2019}{...}
+{* *! version 1.0.4  18nov2019}{...}
 {vieweralsosee "corrona" "help corrona"}{...}
 {vieweralsosee "corcf" "help corcf"}{...}
 {vieweralsosee "corset" "help corset"}{...}
@@ -125,6 +125,67 @@ metadata.
 your choosing. This is particularly useful for comparing regular updates to
 reports. The dataset archive can be optionally omitted.
 
+
+{title:Variable type definitions}
+
+{pstd}
+In order to properly format the table {cmd:cortable} classifies variables as 
+binary, categorical, or continuous. {cmd:cortable} uses three sources of 
+information to determine the type of variable the order of precedence is:
+
+{phang2}
+1) Information set using the command {help corset define};
+
+{phang2}
+2) Information stored in the metatdata, probably set by the registry manager;
+
+{phang2}
+3) {cmd:cortable}'s internal rules for classifying variables.
+
+
+{pstd}
+It is worth noting that while the information set by {help corset define} is
+the first place {cmd:cortable} looks for information, you should not need to use
+it very often because in most cases the information in items 2 and 3 should be
+sufficient to properly classify all variables. 
+
+{pstd}
+If no information is supplied using {help corset define}, {cmd:cortable} uses 
+the following defaults:
+
+{phang2}
+{cmd:binary} is assigned to all variables with only values 0 and 1 or missing.
+
+{phang2}
+{cmd:categorical} is assigned to all variables with between two and ten 
+unique values. Missing values are ignored when counting unique values.
+
+{phang2}
+{cmd:continuous} is assigned to all variables with more than ten 
+unique values.
+
+{title:Variable group definitions}
+
+{pstd}
+Variables can be grouped together, that is, displayed without lines 
+between them, such as in the case of sets of not mutually exclusive dummy 
+variables or continuous BMI followed by BMI categories. In order for {cmd:cortable}
+to group variables two things must be true. First, the variables must be next
+to each other in the main {it:varlist}. Second, {cmd:cortable} must be able to
+determine that the variables should be grouped. {cmd:cortable} uses three sources of 
+information to determine whether variables that appear next to each other in 
+the {it:varlist} should be grouped:
+
+{phang2}
+1) Information set using the command {help corset group};
+
+{phang2}
+2) Information stored in the metatdata, probably set by the registry manager;
+
+{phang2}
+3) The variable label is of the following form "{it:group label}; {it:variable label}". 
+The semi-colon is essential. It is also essential that the group label be identical
+for all variables in the group.
 
 {marker options}{...}
 {title:Options}

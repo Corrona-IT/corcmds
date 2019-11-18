@@ -1,3 +1,4 @@
+* ram 1.2 18nov2019
 program define cortable_split, rclass
 version 15.1
 
@@ -318,7 +319,7 @@ while "``vi''"!="" {
 			}
 			`put' table `tname'(`currow',1) = (`tab' `"`varlab', n (%)"')
 
-			if `grcontinued' {	
+			if `grcontinued'|(`grcontinued'==0&`"`varlabprefix'"'!="") {	
 				`put' table `tname'(`currow',.), border(top, nil) 
 			}
  

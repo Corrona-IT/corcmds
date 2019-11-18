@@ -1,9 +1,9 @@
 * version of stata.toc for corrona utilities
-v 3
+v 2
 * packages title 
 d Corrona utilities
 d R Raciborski, R Medeiros, N Guo
-d Distribution-Date: 20191114
+d Distribution-Date: 20191118
 d 
 * available packages
 p corrona directory of Corrona-specific commands and help
