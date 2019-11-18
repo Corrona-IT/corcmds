@@ -15,6 +15,8 @@ program define corcf, rclass sortpreserve
         /* need to add abbreviate(), string() */ ///
     ]
 
+    local user "`c(username)'"
+
     // Error checking
 	if "`separator'"!="" | "`sepby'" != "" {
 		if "`separator'"!="" {

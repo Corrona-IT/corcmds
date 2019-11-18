@@ -40,6 +40,8 @@ syntax varlist(numeric) [if] [in] /// rowvariable list
 local fullcmd `"`0'"'
 
 ********************************
+local user "`c(username)'"
+
 mata: cortable_check()
 
 local rowvarlist `varlist'

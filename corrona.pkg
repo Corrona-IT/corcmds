@@ -1,11 +1,13 @@
 v 2
 d corrona.  Directory of Corrona-specific commands and help
 *
-d Distribution-Date: 20191117
+d Distribution-Date: 20191118
 f corrona.sthlp
-f corrona.mlib
+f lcorrona.mlib
 f corcf.ado
 f corcf.sthlp
+f cordd.ado
+f cordd.sthlp
 f corset.ado
 f corset.sthlp
 f cortable.ado

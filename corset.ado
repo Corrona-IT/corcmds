@@ -12,6 +12,8 @@ syntax anything, [verbose /// for report and greport
 
 gettoken myarg list : anything
 
+local user "`c(username)'"
+
 // v2.0.0: determine subcommand and check data
 mata: corset("`myarg'")
 
