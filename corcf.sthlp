@@ -9,7 +9,6 @@
 {viewerjumpto "Options" "corcf##options"}{...}
 {viewerjumpto "Remarks" "corcf##remarks"}{...}
 {viewerjumpto "Examples" "corcf##examples"}{...}
-
 {hline}
 {cmd:help corcf}{right:Compare values of variables in two datasets}
 {hline}
@@ -28,8 +27,10 @@
 {synopt :{opth id:(varlist:idvars)}}use {it:idvars} as the ID variables{p_end}
 {synopt :{opt v:erbose}}add table of discordant values for each variable{p_end}
 {synopt :{opt all}}include note for variables without discordant values{p_end}
-{synopt :{opt master:list}}add table of observations appearing only in master data{p_end}
-{synopt :{opt using:list}}add table of observations appearing only in using data{p_end}
+{synopt :{opt master:list}}add table of observations appearing only in master 
+data{p_end}
+{synopt :{opt using:list}}add table of observations appearing only in using data
+{p_end}
 
 {syntab :List}
 {synopt :{opt noo:bs}}do not list observation numbers{p_end}
@@ -142,33 +143,45 @@ names will not be affected by this extra step.
 {title:Examples}
 
 {pstd}
-All examples assume you are working in the top-level directory for your 
-registry's data and need only further specify the month. For these generic
-examples, "data" is used in place of any given dataset's name and the
-NNmmmYYYY format that is used for PsO is used for the date. Adjust as 
-needed for your registry.
-
-{phang}
-{it:See list of all variables that differ between analytic data created with} 
-{it: new code compared to previous month, matching on unique IDs }
-{cmd:id}{it: and }{cmd:visitdate}
+{ul:Setup:}
 
 {pstd}
-{cmd:. use 201911/data_01nov2019} {break}
-{cmd:. corcf * using 201910/data_01oct2019, id(id visitdate)}
-
-{phang}
-{it: As above, but control for observations sites updated where }
-{cmd:modified_date}{it: records the date the site last edited the record}
+{cmd:. sysuse nlsw88}
 
 {pstd}
-{cmd:. corcf * using 201910/data_01oct2019, id(id visitdate modfied_date)}
+{cmd:. save nlswbase, replace}{break}
+{cmd:. drop if grade==0}{break}
+{cmd:. replace age=age+rbinomial(1,0.02)}{p_end}
 
-{phang}
-{it: View a list of observations that differ} 
-
+    {hline}
 {pstd}
-{cmd:. corcf * using 201910/data_01oct2019, id(id visitdate) verbose}
+Find variables that differ between current (master) and base (using)
+
+{phang2}
+{cmd:. corcf * using nlswbase, id(idcode)}{p_end}
+
+    {hline}
+{pstd}
+Also see which IDs are in the using but not the master
+
+{phang2}
+{cmd:. corcf * using nlswbase, id(idcode) usinglist}{p_end}
+
+    {hline}
+{pstd}
+See listing of observations that differ
+
+{phang2}
+{cmd:. corcf * using nlswbase, id(idcode) verbose}{p_end}
+
+    {hline}
+{pstd}
+Also sort and group differing observations by another variable, suppressing the
+observation number
+
+{phang2}
+{cmd:. corcf * using nlswbase, id(idcode) verbose sepby(occupation) noobs} 
+{p_end}
 
 
 {title:Author} 
