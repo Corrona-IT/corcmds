@@ -124,7 +124,8 @@ described, please report it by creating a
     on your computer. This is the same location you use when sending links to
     attachments via Outlook instead of the attachment itself.</li>
   <li>Sync to any of the registry data locations on SharePoint.</li>
-  <li>Open a new issue showing the results of listing Corrona directories as
+  <li>Open a <a href=https://github.com/Corrona-IT/corcmds/issues>new issue</a>
+    showing the results of listing Corrona directories as
     well as your user name. Attach the log that is created by the following
     to the issue that you create.
     <pre>
