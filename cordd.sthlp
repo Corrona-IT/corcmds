@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.1.1  25aug2019}{...}
+{* *! version 1.2.0  10dec2019}{...}
 {vieweralsosee "corrona" "help corrona"}{...}
 {vieweralsosee "export excel" "help import excel"}{...}
 {viewerjumpto "Syntax" "cordd##syntax"}{...}
@@ -26,6 +26,7 @@
 {synopt :{cmdab:sh:eet("}{it:sheetname}{cmd:")}}save to Excel worksheet{p_end}
 {synopt :{opt sheetmod:ify}}modify Excel worksheet{p_end}
 {synopt :{opt sheetrep:lace}}replace Excel worksheet{p_end}
+{synopt :{opt savedta}}also save a copy of the underlying data for the dictionary{p_end}
 {synoptline}
 
 {marker description}{...}
@@ -60,6 +61,14 @@ This option is cannot be combined with
 {cmd:sheetreplace} clears the worksheet before the new data dictionary
 information are exported to it. {cmd:sheetreplace} cannot be combined with
 {cmd:sheetmodify} or the {cmd:replace} suboption of {cmd:saving()}.
+
+{phang} 
+{cmd:savedta} saves a copy of the dataset properties that are used to create 
+the data dictionary. The dataset uses name and filepath that are 
+specified in {cmd:saving()}, but appends {cmd:_dd} to the name of the 
+data dictionary file. For example, if you specify {cmd:mycodebook.xlsx} as the
+name of the file in the {cmd:saving()} option, the properties dataset is 
+saved as {cmd:mycodebook_dd.dta}. 
 
 	
 {marker remarks}{...}
