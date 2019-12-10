@@ -1,3 +1,4 @@
+*! v2.0.1  10dec2019  RMedeiros
 *! v2.0.0  17nov2019  RRaciborski
 *! v1.2.1  15nov2019  RRaciborski
 *! v1.2.0  07sep2019  RMedeiros
@@ -8,7 +9,7 @@ version 15.1
 syntax varlist(numeric) [if] [in] /// rowvariable list
 	[, ///
     SAVing(string) /// SAVing(<filename>, [replace|append]) - docx file to save
-	Name(string) /// name(<handle>, replace append), used when not saving
+	name(string) /// name(<handle>, replace append), used when not saving
 	///
 	SAVEDta(string) /// DTAsaving(<filename> , [replace|append])
 	omitdta /// required if not saving data 
@@ -149,7 +150,7 @@ local constat = usubinstr("`constat'","median","p50",.)
 tokenize `"`savedta'"', parse(",")
 if `"`1'"'=="" {
 	if "`omitdta'"=="" {
-		display in smcl `"{err:No dta file specified to save results. This is probably an error}"' ///
+		display in smcl `"{err:No dta file specified to save results. This is probably an error }"' ///
 			`"{err:if this is intentional, specify option {bf:omitdta}.}"'
 	}
 	else if "`omitdta'"=="omitdta" {

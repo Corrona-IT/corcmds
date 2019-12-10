@@ -26,7 +26,7 @@
 {synopt :{cmdab:sh:eet("}{it:sheetname}{cmd:")}}save to Excel worksheet{p_end}
 {synopt :{opt sheetmod:ify}}modify Excel worksheet{p_end}
 {synopt :{opt sheetrep:lace}}replace Excel worksheet{p_end}
-{synopt :{opt savedta}}also save a copy of the underlying data for the dictionary{p_end}
+{synopt :{opt savedta()}}also save a copy of the underlying data for the dictionary{p_end}
 {synoptline}
 
 {marker description}{...}
@@ -63,12 +63,15 @@ information are exported to it. {cmd:sheetreplace} cannot be combined with
 {cmd:sheetmodify} or the {cmd:replace} suboption of {cmd:saving()}.
 
 {phang} 
-{cmd:savedta} saves a copy of the dataset properties that are used to create 
-the data dictionary. The dataset uses name and filepath that are 
-specified in {cmd:saving()}, but appends {cmd:_dd} to the name of the 
-data dictionary file. For example, if you specify {cmd:mycodebook.xlsx} as the
-name of the file in the {cmd:saving()} option, the properties dataset is 
-saved as {cmd:mycodebook_dd.dta}. 
+{cmd:savedta} saves a copy of the dataset 
+
+{phang}
+{cmd:savedta(}{it:{help filename}}[{cmd:,} {cmd:replace} | {cmd:append}]{cmd:)}
+specifies the name of the Stata dataset where 
+the properties that are used to create 
+the data dictionary should be saved.  Remember to enclose the name in
+double quotation marks if it contains spaces.  If the dataset already exists,
+it can be overwritten by specifying {cmd:replace}.  No dataset is created by default.
 
 	
 {marker remarks}{...}

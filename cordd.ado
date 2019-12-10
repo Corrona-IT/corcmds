@@ -2,7 +2,7 @@
 *! Create data dictionary from metadata	
 program cordd
     version 15
-    syntax anything [using/]   /// variables from data in memory or on disk
+    syntax anything [using/]  /// variables from data in memory or on disk
         [if] [in]             /// subset
         ,                     ///
         SAVing(string asis)   /// name of workbook
@@ -11,6 +11,7 @@ program cordd
         SHEETMODify           ///  modify sheet
         SHEETREPlace          ///   replace sheet
         SAVEDTA               ///  save copy of data dictionary dataset
+	    SAVEDta(string)       /// DTAsaving(<filename> , [replace|append])
         ] 
 
     local user "`c(username)'"
@@ -43,6 +44,11 @@ program cordd
     local replace `r(replace)'
 
     opts_exclusive "`replace' `sheetmodify' `sheetreplace'" "" 184
+
+    check_savedta `savedta'
+    local dsaving "`r(saving)'"
+    local dreplace `r(replace)'
+    local dappend `r(append)'
 
     // v.1.1: added code to make sure end user has descsave installed & updated
     // v2.0.0: removed update/install of -descsave- from SSC
@@ -173,15 +179,27 @@ program cordd
     drop char11 type
 
     if "`savedta'"!="" {
-        if strpos(`"`saving'"',"xlsx") {
-            local fname = subinstr(`"`saving'"',".xlsx","",.)
+        qui {
+            drop if name==""
+            keep char1-char12 
+            gen dta="`c(filename)'"
+            replace dta=`"`using'"' if dta==""
+            gen dtadate = .
+            format dtadate %tc 
+            if "`c(filedate)'"=="" {
+                replace dtadate = .x 
+            }
+            else {
+                replace dtadate = tc("`c(filedate)'")
+            }
+        }
+        if "`dappend'"!="append" {
+            save `"`dsaving'"', `dreplace' emptyok
         }
         else {
-            local fname = subinstr(`"`saving'"',".xls","",.)
+            append using `"`dsaving'"'
+            save `"`dsaving'"', replace 
         }
-        drop if name==""
-        keep char1-char12
-        save `"`fname'_dd.dta"', replace emptyok
     }
 
     export excel char1-char12 using `"`saving'"' if name!="", `sheet' ///
@@ -190,7 +208,7 @@ program cordd
 end
 
 program check_saving, rclass
-    syntax [anything] [, replace sheetmodify sheetreplace]
+    syntax [anything] [, replace]
     // where to save?
     if `"`anything'"'=="" {
         di as err "You must specify the name of the data dictionary"
@@ -201,6 +219,22 @@ program check_saving, rclass
 
     if "`replace'"!="" {
         return local replace `replace'
+    }
+end
+
+program check_savedta, rclass
+    syntax [anything] [, replace append]
+    // where to save?
+
+    opts_exclusive "`replace' `append'" "savedta" 184
+
+    return local saving `anything'
+
+    if "`replace'"!="" {
+        return local replace `replace'
+    }
+    else if "`append'"!="" {
+        return local append `append'
     }
 end
 
