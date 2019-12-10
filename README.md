@@ -113,7 +113,8 @@ described, please report it by creating a
   in your personal directory or you may have copies in plus that conflict with the 
   versions installed from the official distribution location. Make sure you delete any
   copies in your personal directory and, if you get an error about conflicts, follow
-  the prompts to force installation.</p>
+  the prompts to force installation (or specify the <b>force</b> option if you use
+  the <code>net install</code> command instead of clicking through the links).</p>
   
  <i>Integrity check error</i>
  
