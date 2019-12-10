@@ -1,4 +1,4 @@
-*! version 1.1.1  17sep2019	
+*! version 1.2.0  10dec2019	
 *! Create data dictionary from metadata	
 program cordd
     version 15
