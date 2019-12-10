@@ -10,6 +10,7 @@ program cordd
         SHeet(passthru)       ///  name of worksheet
         SHEETMODify           ///  modify sheet
         SHEETREPlace          ///   replace sheet
+        SAVEDTA               ///  save copy of data dictionary dataset
         ] 
 
     local user "`c(username)'"
@@ -37,11 +38,11 @@ program cordd
     }
     preserve
 
-    if "`sheetreplace'"=="" {
-        check_saving `saving'
-    }
+    check_saving `saving'
     local saving "`r(saving)'"
     local replace `r(replace)'
+
+    opts_exclusive "`replace' `sheetmodify' `sheetreplace'" "" 184
 
     // v.1.1: added code to make sure end user has descsave installed & updated
     // v2.0.0: removed update/install of -descsave- from SSC
@@ -171,7 +172,19 @@ program cordd
     }
     drop char11 type
 
-    export excel char1-char12 using `saving' if name!="", `sheet' ///
+    if "`savedta'"!="" {
+        if strpos(`"`saving'"',"xlsx") {
+            local fname = subinstr(`"`saving'"',".xlsx","",.)
+        }
+        else {
+            local fname = subinstr(`"`saving'"',".xls","",.)
+        }
+        drop if name==""
+        keep char1-char12
+        save `"`fname'_dd.dta"', replace emptyok
+    }
+
+    export excel char1-char12 using `"`saving'"' if name!="", `sheet' ///
         `replace' `sheetreplace' `sheetmodify' firstrow(varlabels)
 
 end
