@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0.1  22aug2019}{...}
+{* *! version 1.0.2  06jul2020}{...}
 {vieweralsosee "[D] net" "help d_net"}{...}
 {vieweralsosee "[R] adoupdate" "help r_adoupdate"}{...}
 {vieweralsosee "" "--"}{...}
@@ -96,7 +96,7 @@ command periodically.
 {p 8 30 2}{helpb corcf}{space 10}Compare values of variables between two
 datasets{p_end}
 
-{p 8 30 2}{helpb corset}{space 9}!! Set properties{p_end}
+{p 8 30 2}{helpb corset}{space 9}Set variable properties for table automation{p_end}
 
 
 {pstd}{marker tables}{...}

@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0.4  18nov2019}{...}
+{* *! version 1.1.0  07jul2020}{...}
 {vieweralsosee "corrona" "help corrona"}{...}
 {vieweralsosee "corcf" "help corcf"}{...}
 {vieweralsosee "corset" "help corset"}{...}
@@ -113,18 +113,29 @@ table{p_end}
 {title:Description}
 
 {pstd}
-{cmd:cortable} 
-calculates summary statistics and creates a table based on variable properties.
+{cmd:cortable} calculates summary statistics and creates a table based on
+variable properties using Corrona default displays and implements the 
+recommended suppression guidelines for total N<5.  
 {cmd:cortable} recognizes three classes of variable: binary, categorical, and
-continuous. The variable class may either be declared by the user with 
-{helpb corset define} or defaults are used given variable properties that exist in
+continuous. The variable class may either be declared by the user with {helpb
+corset define} or defaults are used given variable properties that exist in
 metadata.
 
 {pstd}
-{cmd:cortable} archives a copy of the table contents to a dataset of
-your choosing. This is particularly useful for comparing regular updates to
-reports. The dataset archive can be optionally omitted.
+{cmd:cortable} archives a copy of the table contents to a dataset of your
+choosing. This is particularly useful for comparing regular updates to reports
+because the {helpb corcf} command can be used to look for changes in values
+within an allowed range. The dataset archive can be optionally omitted.
 
+{pstd}
+{ul:Note}: Additional Biostats guidance on suppression of {ul:cell} counts with
+n<5 for identifiable characteristics such as age, gender, race, ethnicity,
+education, region, site, insurance type or sensitive topics such as alcohol
+use, smoking, and cannabis/other illicit drug use is not automated. Always
+carefully manually review the tables created by {cmd:cortable} to determine if
+categories should be combined or additional cells should be suppressed after
+the document is generated.
+ 
 
 {title:Variable type definitions}
 
@@ -250,12 +261,13 @@ statistics in the table. If no {it:colvarlist} is specified, a total is
 included by default.
 
 {phang}
-{opt suppress(#)} changes the threshold for suppressing small cell sizes from
-the default level of 5. 
+{opt suppress(#)} changes the threshold for suppressing small sample sizes from
+the default level of 5. Statistics based on N less than # are not shown.
 
 {phang}
 {opt na(text)} specifies alternate text that {cmd:cortable} should display when
-a statistic is suppressed due to small cell size. The default value is {cmd:n/a}. 
+a statistic is suppressed due to small sample size. 
+The default value is {cmd:n/a}. 
 
 {phang}
 {opt counts} requests a table containing the count of non-missing observations

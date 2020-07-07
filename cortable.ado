@@ -1,3 +1,6 @@
+*! v2.0.4  05jul2020  RMedeiros
+*! v2.0.3  25jun2020  RMedeiros
+*! v2.0.2  03jun2020  RMedeiros
 *! v2.0.1  10dec2019  RMedeiros
 *! v2.0.0  17nov2019  RRaciborski
 *! v1.2.1  15nov2019  RRaciborski
@@ -8,10 +11,10 @@ version 15.1
 
 syntax varlist(numeric) [if] [in] /// rowvariable list
 	[, ///
-    SAVing(string) /// SAVing(<filename>, [replace|append]) - docx file to save
+    SAVing(string asis) /// SAVing(<filename>, [replace|append]) - docx file to save
 	name(string) /// name(<handle>, replace append), used when not saving
 	///
-	SAVEDta(string) /// DTAsaving(<filename> , [replace|append])
+	SAVEDta(string) /// SAVEDta(<filename> , [replace|append])
 	omitdta /// required if not saving data 
 	clear /// runs -put* clear- 
 	///
@@ -63,7 +66,7 @@ else {
 // Checking validity of options 
     // SAVING()
         // first parse the saving option
-if "`saving'"!="" {
+if `"`saving'"'!="" {
 	local 0 `"`saving'"'
 	syntax [anything] [, replace append]
 	local saving `"`anything'"'
@@ -136,7 +139,7 @@ if "`na'"=="" {
 	local na n/a
 }
 
-if "`font'"=="" {
+if `"`font'"'=="" {
 	local font font("Calibri", 10.5)
 }
 
@@ -160,6 +163,7 @@ if `"`1'"'=="" {
 else {
 	local post = 1
 	local postfile `"`1'"'
+
 	
 	* checking replace and append options
 	if `=ustrpos("`3'","append")' {
@@ -222,17 +226,18 @@ if "`clear'"=="clear" {
 
 capture `put' begin, `font' `landscape'
 
-if `newtable' {
-	`put' paragraph
-	
+if `newtable' {	
 	if `"`title'"'!= "" & "`tabnumber'"!="" & `printtabnum' {
+		`put' paragraph
 		`put' text (`"Table `tabnumber': "'), bold 
 		`put' text (`"`title'"')
 	}
 	if `"`title'"'== "" & "`tabnumber'"!="" & `printtabnum' {
+		`put' paragraph
 		`put' text (`"Table `tabnumber'"'), bold 
 	}
 	if `"`title'"'!= "" & ("`tabnumber'"==""|!`printtabnum')  {
+		`put' paragraph
 		`put' text (`"`title'"')
 	}
 	
@@ -243,7 +248,7 @@ if `newtable' {
 	`put' table `tname' = (1,`ncols'),  `tableoptions'
 	local currow = 1
 }
-if !`newtable'&"`header'"=="" {
+if !`newtable' {
 	`put' table `tname'(`currow',.), addrows(1, after)
 	local currow = `currow' + 1
 }
@@ -365,8 +370,8 @@ else {
 
 
 if "`r(nvaries)'"!="" {
-	di "The following variable(s) have non-missing counts that do not match the header shown in the table:"
-	di "`nvaries'"
+	di as error "The following variable(s) have non-missing counts that do not match the header shown in the table:"
+	di as error "`nvaries'"
 	`put' paragraph
 	`put' text ("The following variable(s) have non-missing counts that do not match the header shown in the table: ")
 	`put' text ("`r(nvaries)'."), bold 

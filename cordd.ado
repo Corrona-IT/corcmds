@@ -1,4 +1,4 @@
-*! version 1.2.0  10dec2019	
+*! version 1.3.0  25jun2020
 *! Create data dictionary from metadata	
 program cordd
     version 15
@@ -160,7 +160,8 @@ program cordd
         replace format = "string" if strpos(format,"s") & strpos(format,"%")
         replace format = "numeric" if strpos(format,"g") & strpos(format,"%")
 
-        replace char10 = char10+", "+char12 if !missing(char10) & char8!="1"
+*v1.3.0: removed line causing notes to be added to revision date (rraciborski)
+        *replace char10 = char10+", "+char12 if !missing(char10) & char8!="1"
 
         replace char8 = "V"+char8
         replace char9 = "V"+char9 if !missing(char9)
@@ -215,7 +216,16 @@ program check_saving, rclass
         exit 198
     }
 
-    return local saving `anything'
+    parse `anything', parse(".")
+
+*v1.3.0: made xlsx default format (rraciborski)
+    if "`2'"=="" {
+        local saving `anything'
+        return local saving "`saving'.xlsx"
+    }
+    else { 
+        return local saving `anything'
+    }
 
     if "`replace'"!="" {
         return local replace `replace'

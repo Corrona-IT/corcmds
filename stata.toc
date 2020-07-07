@@ -3,7 +3,7 @@ v 2
 * packages title 
 d Corrona utilities
 d R Raciborski, R Medeiros, N Guo
-d Distribution-Date: 20191118
+d Distribution-Date: 20200707
 d 
 * available packages
 p corrona directory of Corrona-specific commands and help

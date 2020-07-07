@@ -1,4 +1,4 @@
-* ram 1.2 18nov2019
+*! v1.3  07jul2020  RRaciborski
 program define cortable_split, rclass
 version 15.1
 
@@ -29,6 +29,8 @@ syntax [if] ///
 	TABNumber(string) /// table number, identifies data in file
 	]
 
+*v1.3: set suppress to suppress-1 so strictly less than specified (rar, 7/7/20)
+local suppress = `suppress'-1
 
 	
 ************ start actual statistics here*********************

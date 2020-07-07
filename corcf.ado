@@ -12,6 +12,8 @@ program define corcf, rclass sortpreserve
         NOLabel /// passthru to list
 		SEParator(numlist max=1 integer) /// passthru to list 
 		SEPBY(varlist) /// passthru to list
+        RELDIF(numlist max=1)  /// allowed degree of difference
+        NODECRease  /// difference must be positive
         /* need to add abbreviate(), string() */ ///
     ]
 
@@ -45,7 +47,18 @@ program define corcf, rclass sortpreserve
         local verbose verbose
     }
     else local max 0
-    
+
+    if "`decrease'" == "nodecrease" {
+        if "`reldif'"=="" {
+            di as error ///
+                "option nodecrease may only be specified with option reldif()"
+            exit 198
+        }
+        else {
+            local ndcr "& `var'>=_`var'"
+        }
+    }
+ 
     local varlist : list varlist - id
 	
     quietly {
@@ -187,15 +200,32 @@ program define corcf, rclass sortpreserve
             }
            // Check values
            else {
-                // !! tolerance to be inserted here
+                local mismatches none
+
+                // 2a. in all cases, report # of mismatches/tolerance exceeded
                 // !! nonegative to be inserted here
-                capture assert `var'==_`var'
-                // 2a. in all cases, report # of mismatches
-                if _rc {
+                if "`reldif'"!="" & "`tms'"!="str" {
+                    qui count if reldif(`var',_`var')>`reldif' `ndcr'
+                    if `r(N)'>0 {
+                        local mismatches found
+                    }
+                }
+                else {
+                    capture assert `var'==_`var'
+                    if _rc {
+                        local mismatches found
+                    }
+                }
+                if "`mismatches'"=="found" { 
                     local ++nomatch 
                     local ++values
                     quietly {
-                        replace `cf'=(`var'!=_`var')
+                        if "`reldif'"=="" {
+                            replace `cf'=(`var'!=_`var')
+                        }
+                        else {
+                            replace `cf'=(reldif(`var',_`var')>`reldif' `ndcr')
+                        }
                         count if `cf'==1
                         di as err "`var': " r(N) " mismatches"
                         if "`verbose'"!="" {

@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 2.0.0  15nov2019}{...}
+{* *! version 2.1.0  07jul2020}{...}
 {vieweralsosee "[D] cf" "help cf"}{...}
 {vieweralsosee "[D] compare" "help compare"}{...}
 {vieweralsosee "[D] merge" "help merge"}{...}
@@ -31,6 +31,10 @@
 data{p_end}
 {synopt :{opt using:list}}add table of observations appearing only in using data
 {p_end}
+
+{syntab :Matching}
+{synopt :{opth reldif(#)}}threshold for relative difference in numeric values{p_end}
+{synopt :{opt nodecr:ease}}decreases within relative difference are still errors{p_end}
 
 {syntab :List}
 {synopt :{opt noo:bs}}do not list observation numbers{p_end}
@@ -68,7 +72,12 @@ as coming from either the {bf:master_data} or {bf:using_data}.
     observations in the using dataset to those in the master dataset. This 
 	option is required if the master and using datasets have
     different numbers of observations.  
-	
+
+{phang2}
+To merge observations on observation number, for example when the expected 
+    change is in the values of the merge keys themselves and resulting sort
+    order, omit the {bf:id()} option. 
+
 {phang} 
 {opt verbose} displays a table, by variable, comparing the master and using
     values that differ.  If not specified, only the number of differences is
@@ -81,12 +90,32 @@ as coming from either the {bf:master_data} or {bf:using_data}.
 
 {phang}
 {opt masterlist} displays a table of observations found only in the master 
-	dataset. They are listed sorted by {it:idvars}. 
+	dataset. The list is sorted by {it:idvars}. 
 
 {phang}
 {opt usinglist} displays a table of observations found only in the using 
-	dataset. They are listed sorted by {it:idvars}. 
+	dataset. The list is sorted by {it:idvars}. 
 	
+
+{dlgtab:Matching}
+
+{phang}
+{opt reldif(#)} specifies that {cmd:corcf} ignore differences within a
+tolerance of |#| percent. Any positive number greater than 0 may be specified. 
+For example, {cmd:reldif(1)} allows a difference of
+-1% to 1% between the dataset in memory compared to the dataset on disk. 
+
+{pstd}
+The same value is applied to all variables in {it:varlist}. This option is
+designed as a complement for the tables of descriptive statistics produced by
+{helpb cortable}. If used with raw datasets, make sure to restrict the 
+{it:varlist} to continuous variables.
+
+{phang} 
+{opt nodecrease} specifies that {opt reldif(#)} only apply to non-negative
+changes. For example, if {cmd:reldif(1)} is specified, the allowed change is 0
+to 1%. 
+
 	
 {dlgtab:List}
 
