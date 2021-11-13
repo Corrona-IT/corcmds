@@ -1,3 +1,4 @@
+*! v2.0.5  11nov2021  PLakin
 *! v2.0.4  05jul2020  RMedeiros
 *! v2.0.3  25jun2020  RMedeiros
 *! v2.0.2  03jun2020  RMedeiros
@@ -7,7 +8,7 @@
 *! v1.2.0  07sep2019  RMedeiros
 
 program define cortable, rclass
-version 15.1
+version 16.1
 
 syntax varlist(numeric) [if] [in] /// rowvariable list
 	[, ///
@@ -39,6 +40,8 @@ syntax varlist(numeric) [if] [in] /// rowvariable list
 	pdf /// saves to putpdf 
 	docx /// default but can be specified 
 	TABLEOPTions(string) /// options at table creation time 
+	PCTFoverride(string) /// percent format override for cat and binary
+	CONFoverride(string) /// continuous statistics format override
 	]
 	
 local fullcmd `"`0'"'
@@ -134,6 +137,15 @@ else {
 	}
 }
 
+    // PCTFoverride(), CONFoverride() 
+        // table is new until we know otherwise
+if "`pctfoverride'" != "" {
+	di "`pctfoverride' format override specified for categorical statistics."
+}
+
+if "`confoverride'" != "" {
+	di "`confoverride' format override specified for continuous statistics."
+}
 
 if "`na'"=="" {
 	local na n/a
@@ -364,7 +376,9 @@ else {
 		suppress(`suppress') /// when to supress cells for small size 
 		constat("`constat'") /// stats can be anything produced by -summ 
 		tabnumber(`tabnumber') /// table number
-		`header' `addheader'
+		`header' `addheader' ///
+		pctfoverride(`pctfoverride') ///
+		confoverride(`confoverride')
 	local currow = r(currow)
 }
 
