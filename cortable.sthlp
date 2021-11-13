@@ -470,7 +470,7 @@ variables
 {title:Author} 
 
 {p 4 4 2}
-Paul Lakin {break}
+Paul R. Lakin {break}
 CorEvitas, LLC {break}
 plakin@corevitas.com
 
