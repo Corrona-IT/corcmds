@@ -39,7 +39,7 @@ configure your installation settings.  Verify your settings by typing
 which should show you 
 
 {p 8 8 8}
-{cmd:from    "~/Corrona LLC/Rebecca Raciborski - PsO Development/dev/cmd/"}
+{cmd:from    "https://raw.githubusercontent.com/Corrona-IT/corcmds/master"}
 {break}
 {cmd:ado     c:\ado\plus\}{break}
 {cmd:other   (current directory)}
@@ -54,7 +54,7 @@ The Corrona commands are installed using the {helpb net} command from the
 Biostatistics SharePoint site. You set the install location by typing
 
 {p 8 30 2}
-{cmd:. net from "~/Corrona LLC/Rebecca Raciborski - PsO Development/dev/cmd/"}
+{cmd:. net from "https://raw.githubusercontent.com/Corrona-IT/corcmds/master"}
 
 {pstd}
 You set the location for installing the {cmd:corrona} commands by typing

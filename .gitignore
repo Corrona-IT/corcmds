@@ -4,3 +4,6 @@
 *.dta
 *.xlsx
 *.xls
+distinct.ado
+xcontract.ado
+xcontract.sthlp
