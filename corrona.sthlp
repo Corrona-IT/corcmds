@@ -108,7 +108,7 @@ datasets{p_end}
 {title:Author} 
 
 {pstd}
-Rebecca Raciborski {break}
-Corrona, LLC {break}
-rraciborski@corrona.org
+Paul R. Lakin {break}
+CorEvitas, LLC {break}
+plakin@corevitas.com
 {p_end}
