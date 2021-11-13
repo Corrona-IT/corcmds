@@ -1,4 +1,5 @@
-*! v1.3  07jul2020  RRaciborski
+*! v1.3.1  	11nov2021  PLakin
+*! v1.3  	07jul2020  RRaciborski
 program define cortable_split, rclass
 version 15.1
 
@@ -27,6 +28,8 @@ syntax [if] ///
 	noHEader 		/// suppresses adding a first row
 	ADDHeader /// forces the normal header below altheader
 	TABNumber(string) /// table number, identifies data in file
+	PCTFoverride(string) /// percent format override for cat and binary
+	CONFoverride(string) /// continuous statistics format override
 	]
 
 *v1.3: set suppress to suppress-1 so strictly less than specified (rar, 7/7/20)
@@ -193,6 +196,10 @@ while "``vi''"!="" {
 				local s = ustrupper("`stat'")
 				`put' table `tname'(`=`currow'+`i'',1) = (`tab' uchar(8195) + "`s'")
 			}
+			else if "`stat'"=="Var" {
+				local s = "Variance"
+				`put' table `tname'(`=`currow'+`i'',1) = (`tab' uchar(8195) + "`s'")
+			}
 			else if "`stat'"!="n" {
 				local s = strproper("`stat'")
 				`put' table `tname'(`=`currow'+`i'',1) = (`tab' uchar(8195) + "`s'")
@@ -240,8 +247,20 @@ while "``vi''"!="" {
 					else {						
 						* mean, sd
 						if "`stat'"=="msd" {
-							local msd = strofreal(`r(mean)',"%9.1fc")+" (" + ///
-								strofreal(`r(sd)',"%9.1fc") + ")"
+							local msd_m = strofreal(`r(mean)',"%9.2fc")
+							if `=abs(`r(mean)')' < 1 {
+								local msd_m = strofreal(`r(mean)',"%04.2f")
+							}
+							local msd_sd = strofreal(`r(sd)',"%9.2fc")
+							if `=abs(`r(sd)')' < 1 {
+								local msd_sd = strofreal(`r(sd)',"%04.2f")
+							}
+							local msd = "`msd_m'"+" (" + ///
+								 "`msd_sd'"+ ")"
+							if "`confoverride'" != "" {
+							    local msd = strofreal(`r(mean)',"`confoverride'")+" (" + ///
+								strofreal(`r(sd)',"`confoverride'") + ")"
+							}
 							`put' table `tname'(`=`currow'+`i'',`c') = ("`msd'"), halign(center)
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("mean") (r(mean))  ("`tabnumber'")
@@ -253,7 +272,18 @@ while "``vi''"!="" {
 						else if "`stat'"=="mediqr" {
 							tempname iqr
 							scalar `iqr' = `r(p75)'-`r(p25)'
-							local miqr = strofreal(`r(p50)',"%9.2gc")+" ["+strofreal(`iqr',"%9.2gc")+"]"
+							local miqr_m = strofreal(`r(p50)',"%9.2fc")
+							if `=abs(`r(p50)')' < 1 {
+								local miqr_m = strofreal(`r(p50)',"%04.2f")
+							}
+							local miqr_iqr = strofreal(`iqr',"%9.2fc")
+							if `=abs(`iqr')' < 1 {
+								local miqr_iqr = strofreal(`iqr',"%04.2f")
+							}
+							local miqr = "`miqr_m'"+" ["+"`miqr_iqr'"+"]"
+							if "`confoverride'" != "" {
+							    local miqr = strofreal(`r(p50)',"`confoverride'")+" ["+strofreal(`iqr',"`confoverride'")+"]"
+							}
 							`put' table `tname'(`=`currow'+`i'',`c') = ("`miqr'"), halign(center)
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("median") (r(p50))  ("`tabnumber'")
@@ -263,8 +293,24 @@ while "``vi''"!="" {
 						
 						* median [p25 , p75]
 						else if "`stat'"=="medqt" {
-							local medqt = strofreal(`r(p50)',"%9.2gc")+ ///
-								" ["+strofreal(`r(p25)',"%9.2gc")+", "+strofreal(`r(p75)',"%9.2gc")+"]"
+							local medqt_p50 = strofreal(`r(p50)',"%9.2fc")
+							if `=abs(`r(p50)')' < 1 {
+								local medqt_p50 = strofreal(`r(p50)',"%04.2f")
+							}
+							local medqt_p25 = strofreal(`r(p25)',"%9.2fc")
+							if `=abs(`r(p25)')' < 1 {
+								local medqt_p25 = strofreal(`r(p25)',"%04.2f")
+							}
+							local medqt_p75 = strofreal(`r(p75)',"%9.2fc")
+							if `=abs(`r(p75)')' < 1 {
+								local medqt_p75 = strofreal(`r(p75)',"%04.2f")
+							}
+							local medqt = "`medqt_p50'"+ ///
+								" ["+"`medqt_p25'"+", "+"`medqt_p75'"+"]"
+							if "`confoverride'" != "" {
+							    local medqt = strofreal(`r(p50)',"`confoverride'")+ ///
+								" ["+strofreal(`r(p25)',"`confoverride'")+", "+strofreal(`r(p75)',"`confoverride'")+"]"
+							}
 							`put' table `tname'(`=`currow'+`i'',`c') = ("`medqt'"), halign(center)
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("median") (r(p50))  ("`tabnumber'")
@@ -277,7 +323,13 @@ while "``vi''"!="" {
 						else if "`stat'"=="iqr" {
 							tempname iqr
 							scalar `iqr' = `r(p75)'-`r(p25)'
-							local siqr = ustrtrim(strofreal(scalar(`iqr'),"%9.2gc"))
+							local siqr = ustrtrim(strofreal(scalar(`iqr'),"%9.2fc"))
+							if `=abs(`iqr')' < 1 {
+								local siqr = ustrtrim(strofreal(scalar(`iqr'),"%04.2f"))
+							}
+							if "`confoverride'" != "" {
+							    local siqr = ustrtrim(strofreal(scalar(`iqr'),"`confoverride'"))
+							}
 							`put' table `tname'(`=`currow'+`i'',`c') = ("`siqr'"), halign(center)
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("iqr") (scalar(`iqr'))  ("`tabnumber'")
@@ -286,7 +338,13 @@ while "``vi''"!="" {
 						}
 						* anything -summ , detail- produces
 						else {
-							local s = ustrtrim(strofreal(scalar(r(`stat')),"%9.2gc"))
+							local s = ustrtrim(strofreal(scalar(r(`stat')),"%9.2fc"))
+							if `=abs(scalar(r(`stat')))' < 1 {
+								local s = ustrtrim(strofreal(scalar(r(`stat')),"%04.2f"))
+							}
+							if "`confoverride'" != "" {
+								local s = ustrtrim(strofreal(scalar(r(`stat')),"`confoverride'"))
+							}
 							`put' table `tname'(`=`currow'+`i'',`c') = ("`s'"), halign(center)
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("`stat'") (r(`stat'))  ("`tabnumber'")
@@ -385,8 +443,16 @@ while "``vi''"!="" {
 							("`na'"), halign(center)	
 					}
 					else {
-						local pct = trim("`: display %5.2g 100*r(N)/`cn''") 
-						local n = trim("`: display %10.2gc r(N)'")
+					    if abs(100*r(N)/`cn') < 1 {
+							local pct = trim("`: display %04.2f 100*r(N)/`cn''") 
+						}
+						else {
+						    local pct = trim("`: display %5.1f 100*r(N)/`cn''")
+						}
+						if "`pctfoverride'" ~= "" {
+						    local pct = trim("`: display `pctfoverride' 100*r(N)/`cn''")
+						}
+						local n = trim("`: display %10.0gc r(N)'")
 						`put' table `tname'(`=`currow'+`r'',`c') = ///
 							("`n' (`pct'%)"), halign(center)	
 					}
@@ -463,7 +529,15 @@ while "``vi''"!="" {
 					`put' table `tname'(`currow',`col') = ("`na'"), halign(center)
 				}
 				else {
-					local pct : display %5.2g  `=r(mean)*100' // was %3.1f
+				    if abs(r(mean)*100) < 1 {
+					    local pct : display %04.2f  `=r(mean)*100' 
+					}
+					else {
+					    local pct : display %5.1f  `=r(mean)*100' // was %3.1f
+					}
+					if "`pctfoverride'" ~= "" {
+						local pct : display `pctfoverride' `=r(mean)*100' // was %3.1f
+					}
 					local pct = trim("`pct'")
 					quietly count if `touse'&`var'==1& `cvar'==1
 					local n : display %9.0fc r(N)

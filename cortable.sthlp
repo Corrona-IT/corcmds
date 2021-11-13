@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.1.0  07jul2020}{...}
+{* *! version 2.0.5  11nov2021}{...}
 {vieweralsosee "corrona" "help corrona"}{...}
 {vieweralsosee "corcf" "help corcf"}{...}
 {vieweralsosee "corset" "help corset"}{...}
@@ -78,6 +78,8 @@ suppressed{p_end}
 {synopt :{cmd:counts}}request table containing counts of non-missing 
 observations{p_end}
 {synopt :{cmd:constat(}{it:{help cortable##statname:statname}} [{it:...}]{cmd:)}}statistics for continuous variables{p_end}
+{synopt :{opt confoverride(%fmt)}}override default continuous statistics format to {it:%fmt} {p_end}
+{synopt :{opt pctfoverride(%fmt)}}override default categorical statistics format to {it:%fmt} {p_end}
 
 {syntab :Table header}
 {synopt :{cmdab:headerf:ormat(}{it:{help putdocx##cellfmtopts:cell_fmt_options}}{cmd:)}}options that control the look of cell contents in first row{p_end}
@@ -286,7 +288,7 @@ default is {cmd:msd}.  Available statistics are
 {synopt:{space 4}{opt mean}}mean{p_end}
 {synopt:{space 4}{opt sd}}standard deviation{p_end}
 {synopt:{space 4}{opt msd}}mean with standard deviation (mean +/- s.d.){p_end}
-{synopt:{space 4}{opt variance}}variance{p_end}
+{synopt:{space 4}{opt Var}}variance{p_end}
 {synopt:{space 4}{opt skewness}}skewness{p_end}
 {synopt:{space 4}{opt kurtosis}}kurtosis{p_end}
 {synopt:{space 4}{opt median}}median (same as {opt p50}){p_end}
@@ -468,14 +470,9 @@ variables
 {title:Author} 
 
 {p 4 4 2}
-Rose Medeiros {break}
-Corrona, LLC {break}
-rmedeiros@corrona.org
-
-{p 4 4 2}
-Rebecca Raciborski {break}
-Corrona, LLC {break}
-rraciborski@corrona.org
+Paul Lakin {break}
+CorEvitas, LLC {break}
+plakin@corevitas.com
 
 {title:Also see}
 
