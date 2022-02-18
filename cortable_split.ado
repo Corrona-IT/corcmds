@@ -555,7 +555,7 @@ while "``vi''"!="" {
         }
     } 
 	local header
-	local vi = `vi' + 1 // increment variable
+	local vi = `vi' + 1 // increment variable, adding test comment
 }
 
 return local nvaries "`nvaries'"
