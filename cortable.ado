@@ -255,7 +255,7 @@ if `newtable' {
 	
 	
 	// for new tables always 1 row, c depends on # of groups 
-    // & whether a total is wanted/not 
+    // & whether a total is wanted or not 
 
 	`put' table `tname' = (1,`ncols'),  `tableoptions'
 	local currow = 1
