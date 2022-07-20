@@ -276,6 +276,16 @@ The default value is {cmd:n/a}.
 for each variable in {it:varlist}.
 
 {phang}
+{opt confoverride(%fmt)} Overrides the format of continuous statistics to 
+{it:%fmt}. The default value is {it:%9.2fc}.
+
+{phang}
+{opt pctfoverride(%fmt)} Overrides the format of percentages for binary and
+categorical variables to {it:%fmt}. The default value is {it:%5.1f} for 
+percentages with absolute value greater than or equal to 1 and {it:%04.2f} for
+absolute values strictly less than 1.
+
+{phang}
 {* {cmd:statistics(}{it:statname} [{it:...}]{cmd:)}}
 {cmd:constat(}{it:statname} [{it:...}]{cmd:)}
 specifies the statistics to be displayed for continuous variables; the
