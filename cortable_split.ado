@@ -102,7 +102,7 @@ while "``vi''"!="" {
 				// if it's not already continued
 				if  (`grcontinued'==0) {
 					if "`header'"!="noheader" {
-						`put' table `tname'(`currow',.), addrows(1, after) 
+						`put' table `tname'(`currow',.), addrows(1, after) nosplit
 						local currow = `currow' + 1
 					}
 					local header 
@@ -148,7 +148,7 @@ while "``vi''"!="" {
 		// row heading for continuous variable: variable label 
 		* if continued
 		if `grcontinued' {	
-			`put' table `tname'(`currow',.), addrows(2, after) 
+			`put' table `tname'(`currow',.), addrows(2, after)  nosplit
 			`put' table `tname'(`currow'/`=`currow'+2',.), border(bottom, nil) border(top, nil) 
 			local currow = `currow' + 2
 			`put' table `tname'(`currow',1) = (`tab' `"`varlab'"')
@@ -159,7 +159,7 @@ while "``vi''"!="" {
 				local xbrdr border(bottom, nil)
 			}
 			if "`header'"!="noheader" {
-				`put' table `tname'(`currow',.), addrows(1, after) `xbrdr'
+				`put' table `tname'(`currow',.), addrows(1, after) `xbrdr'  nosplit
 				local currow = `currow' + 1
 			}
 			`put' table `tname'(`currow',1) = (`tab' `"`varlab'"')
@@ -167,7 +167,7 @@ while "``vi''"!="" {
 		
 		local i = 0
 		foreach stat of local constat {	
-			`put' table `tname'(`=`currow'+`i'',.), addrows(1, after) border(bottom, nil)
+			`put' table `tname'(`=`currow'+`i'',.), addrows(1, after) border(bottom, nil)  nosplit
 			local i = `i' + 1
 			* msd = mean +-sd
 			if "`stat'"=="msd" {
@@ -367,14 +367,14 @@ while "``vi''"!="" {
 			
 			
 			if `grcontinued' {	
-				`put' table `tname'(`currow',.), addrows(1, after) 
+				`put' table `tname'(`currow',.), addrows(1, after)  nosplit
 				local currow = `currow' + 1
 				`put' table `tname'(`currow',.), border(bottom, nil) border(top, nil) 
 			}
 		    
             // add "heading" row for variable label	to subtable
 			if "`header'"!="noheader" {
-				`put' table `tname'(`currow',.), addrows(1, after)
+				`put' table `tname'(`currow',.), addrows(1, after) nosplit
 				local currow = `currow' + 1
 			}
 			`put' table `tname'(`currow',1) = (`tab' `"`varlab', n (%)"')
@@ -388,7 +388,7 @@ while "``vi''"!="" {
 			local nlevs = r(r)
 			local levs = r(levels)
 			// add row for each level forvalues i = 1/`nleves' {
-			`put' table `tname'(`currow',.), addrows(`nlevs', after)
+			`put' table `tname'(`currow',.), addrows(`nlevs', after) nosplit
 			`put' table `tname'(`=`currow'+1'/`=`currow'+`nlevs'',.), border(top, nil)
            
             local mylist
@@ -474,13 +474,13 @@ while "``vi''"!="" {
 			local addtocols = 0
 			* no prefix = no special treatment
 			if "`header'"!="noheader" {
-				`put' table `tname'(`currow',.), addrows(1,after)
+				`put' table `tname'(`currow',.), addrows(1,after) nosplit
 				local currow = `currow' + 1
 			}
 			if "`varlabprefix'"=="" {
 				// binary adds variable name and label of target category
 				`put' table `tname'(`currow',1) = (`"`varlab', n (%)"')
-				`put' table `tname'(`currow',.), addrows(1, after) border(bottom, nil)
+				`put' table `tname'(`currow',.), addrows(1, after) border(bottom, nil) nosplit
 				local currow = `currow' + 1
 
 				`put' table `tname'(`currow',1) = (`tab' uchar(8195) + `"`=ustrtrim(`"`:label (`var') 1'"')'"')
