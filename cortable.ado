@@ -26,6 +26,7 @@ syntax varlist(numeric) [if] [in] /// rowvariable list
 	na(string) /// what to display when suppressed
 	constat(string) /// stats for continuous variables 
 	counts /// gives counts of non-missing values of variables
+	NODENOMinator /// prevents printing of variable denominators
 	///
 	/// Options for formatting and titling the table
 	noHEader /// supresses header
@@ -394,6 +395,7 @@ else {
 		constat("`constat'") /// stats can be anything produced by -summ 
 		tabnumber(`tabnumber') /// table number
 		`header' `addheader' ///
+		`nodenominator' /// option to suppress denominator
 		pctfoverride(`pctfoverride') ///
 		confoverride(`confoverride')
 	local currow = r(currow)

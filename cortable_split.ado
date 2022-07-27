@@ -27,6 +27,7 @@ syntax [if] ///
 					/// mediqr (median [iqr])	medqt (median [p25, p75])  median (synonym p50)
 	noHEader 		/// suppresses adding a first row
 	ADDHeader /// forces the normal header below altheader
+	NODENOMinator /// option to suppress denominator
 	TABNumber(string) /// table number, identifies data in file
 	PCTFoverride(string) /// percent format override for cat and binary
 	CONFoverride(string) /// continuous statistics format override
@@ -34,7 +35,7 @@ syntax [if] ///
 
 *v1.3: set suppress to suppress-1 so strictly less than specified (rar, 7/7/20)
 local suppress = `suppress'-1
-
+local nodenom = ("`nodenominator'" ~= "")
 	
 ************ start actual statistics here*********************
 tokenize `rowvarlist'
@@ -221,16 +222,20 @@ while "``vi''"!="" {
 				
 				* list N if not part of a coninuting table
 					if r(N)<=`suppress' {
+					    if ~`nodenom'{
 						`put' table `tname'(`currow',`c') = ("N = `n'") ///
 							, nformat(%9.0fc) halign(center)
+						}
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("n") (r(N))  ("`tabnumber'")
 							}
 						local sup = 1
 					}
 					else {
+					     if ~`nodenom'{
 						`put' table `tname'(`currow',`c') = ("N = `n'") ///
 							, nformat(%9.0fc) halign(center)
+						 }
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("n") (r(N))  ("`tabnumber'")
 							}
@@ -377,8 +382,13 @@ while "``vi''"!="" {
 				`put' table `tname'(`currow',.), addrows(1, after) nosplit
 				local currow = `currow' + 1
 			}
-			`put' table `tname'(`currow',1) = (`tab' `"`varlab', n (%)"')
-
+			if ~`nodenom'{
+				`put' table `tname'(`currow',1) = (`tab' `"`varlab', n (%)"')
+			}
+			else {
+			    `put' table `tname'(`currow',1) = (`tab' `"`varlab', %"')
+			}
+			
 			if `grcontinued'|(`grcontinued'==0&`"`varlabprefix'"'!="") {	
 				`put' table `tname'(`currow',.), border(top, nil) 
 			}
@@ -433,9 +443,10 @@ while "``vi''"!="" {
 				}
 				local n : display %9.0fc r(N)
 				local n = trim("`n'")
+				if ~`nodenom'{
 				`put' table `tname'(`currow',`c') = ("N = `n'"), ///
 					nformat(%9.0fc) halign(center)
-	
+				}
 				foreach i of local mylist {
 					quietly count if `var'==`i'&`touse'&`cvar'==1
 					if `sup' {
@@ -453,8 +464,14 @@ while "``vi''"!="" {
 						    local pct = trim("`: display `pctfoverride' 100*r(N)/`cn''")
 						}
 						local n = trim("`: display %10.0gc r(N)'")
+						if ~`nodenom'{
 						`put' table `tname'(`=`currow'+`r'',`c') = ///
-							("`n' (`pct'%)"), halign(center)	
+							("`n' (`pct'%)"), halign(center)
+						}
+						else {
+						   `put' table `tname'(`=`currow'+`r'',`c') = ///
+							("`pct'%"), halign(center)
+						}
 					}
 					
 					if `post' {
@@ -479,7 +496,12 @@ while "``vi''"!="" {
 			}
 			if "`varlabprefix'"=="" {
 				// binary adds variable name and label of target category
+				if ~`nodenom' {
 				`put' table `tname'(`currow',1) = (`"`varlab', n (%)"')
+				}
+				else {
+				   `put' table `tname'(`currow',1) = (`"`varlab', %"') 
+				}
 				`put' table `tname'(`currow',.), addrows(1, after) border(bottom, nil) nosplit
 				local currow = `currow' + 1
 
@@ -488,7 +510,12 @@ while "``vi''"!="" {
 			else {
 				* update the group label for these
 				if `grcontinued'==0 {
-					`put' table `tname'(`=`currow'-1',1) = (`"`varlabprefix', n (%)"')
+				    if ~`nodenom' {
+						`put' table `tname'(`=`currow'-1',1) = (`"`varlabprefix', n (%)"')
+					}
+					else {
+					    `put' table `tname'(`=`currow'-1',1) = (`"`varlabprefix', %"')
+					}
 				}
 				`put' table `tname'(`currow',1) = (uchar(8195) + `"`varlab'"')
 				`put' table `tname'(`currow',.), border(top, nil)
@@ -509,9 +536,10 @@ while "``vi''"!="" {
 					local n : display %9.0fc r(N)
 					local n = trim("`n'")
 					*local j `subt`col''
+					if ~`nodenom' {
 					`put' table `tname'(`=`currow'-1',`col') = ("N = `n'"), ///
 						nformat(%9.0fc) halign(center)
-
+					}
 					local nforgroup`col' = r(N)
 				}
 				* add to list if N varies
@@ -542,7 +570,12 @@ while "``vi''"!="" {
 					quietly count if `touse'&`var'==1& `cvar'==1
 					local n : display %9.0fc r(N)
 					local n = trim("`n'")
+					if ~`nodenom' {
 					`put' table `tname'(`currow',`col') = ("`n' (`pct'%)"), halign(center)
+					}
+					else {
+					    `put' table `tname'(`currow',`col') = ("`pct'%"), halign(center)
+					}
 				}
 				local col = `col' + 1
 				if `post' {
