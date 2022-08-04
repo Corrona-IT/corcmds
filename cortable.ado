@@ -1,3 +1,4 @@
+*! v2.0.6  04aug2022  PLakin
 *! v2.0.5  11nov2021  PLakin
 *! v2.0.4  05jul2020  RMedeiros
 *! v2.0.3  25jun2020  RMedeiros
@@ -26,6 +27,7 @@ syntax varlist(numeric) [if] [in] /// rowvariable list
 	na(string) /// what to display when suppressed
 	constat(string) /// stats for continuous variables 
 	counts /// gives counts of non-missing values of variables
+	NODENOMinator /// prevents printing of variable denominators
 	///
 	/// Options for formatting and titling the table
 	noHEader /// supresses header
@@ -256,12 +258,29 @@ if `newtable' {
 	
 	// for new tables always 1 row, c depends on # of groups 
     // & whether a total is wanted or not 
-
-	`put' table `tname' = (1,`ncols'),  `tableoptions'
+	//n: di "tableoptions = `tableoptions'"
+	local initrows = 1
+	local hryn = ustrpos("`tableoptions'", "headerrow") 
+	//n: di "hryn = `hryn'"
+	if `hryn' > 0 {
+		n: local toptswords = "`=wordcount("`tableoptions'")'"
+		//n: di "toptswords = `toptswords'"
+		tokenize "`tableoptions'"
+		forvalues wordi = 1/`=`toptswords'' {
+			//n: di "wordi = ``wordi''"
+			if ustrpos("``wordi''", "headerrow") > 0 {
+				//n: di "wordi = ``wordi''"
+				local hrn = ustrregexra("``wordi''","\D","")
+			}
+		}
+		n: di "hrn = `hrn'"
+		local initrows = `hrn'
+	}
+	`put' table `tname' = (`initrows',`ncols'),  `tableoptions'
 	local currow = 1
 }
 if !`newtable' {
-	`put' table `tname'(`currow',.), addrows(1, after)
+	`put' table `tname'(`currow',.), addrows(1, after) nosplit
 	local currow = `currow' + 1
 }
 
@@ -277,12 +296,12 @@ if "`header'"!="noheader" {
 	}
 	// title adds a row, insert into 2nd row, not first
 	`put' table `tname'(`currow',1) = (`"`altrowheader'"')
-	`put' table `tname'(`currow',.), `headerformat'
+	`put' table `tname'(`currow',.), `headerformat' nosplit
 
 	if `: list sizeof colvars'==1 {
-		`put' table `tname'(`currow',.), addrows(1, after)
+		`put' table `tname'(`currow',.), addrows(1, after) nosplit
 		local currow = `currow' + 1
-		`put' table `tname'(`currow',.), `headerformat'
+		`put' table `tname'(`currow',.), `headerformat' nosplit
 		qui count if `touse'
 		`put' table `tname'(`currow',1) = ("Total (N)")
 		`put' table `tname'(`currow',2) = ("N = `=trim("`: display %9.0fc r(N)'")'"), halign(center)
@@ -290,8 +309,8 @@ if "`header'"!="noheader" {
 	// header if you have multiple column variables specified
 	else {
 	    local col = 2
-		`put' table `tname'(`currow',.), addrows(1, after)
-		`put' table `tname'(`=`currow'+1',.), `headerformat'
+		`put' table `tname'(`currow',.), addrows(1, after) nosplit
+		`put' table `tname'(`=`currow'+1',.), `headerformat' nosplit
 		if "`total'"!="" {
 			`put' table `tname'(`currow',`col') = ("Total"), halign(center)
 			qui count if `touse'
@@ -317,7 +336,7 @@ if "`header'"!="noheader" {
 		local col = `col' + `cj'
 		local currow = `currow'+1
 	}
-	`put' table `tname'(`currow',.), border(bottom,single)
+	`put' table `tname'(`currow',.), border(bottom,single) nosplit
 }
 
 if "`altheader'"!="" {
@@ -326,14 +345,14 @@ if "`altheader'"!="" {
 	local altoptions = subinstr("`altheader'", "`alttext'","",1)
 	* note comma in option
 	if "`addheader'"=="addheader" {
-		`put' table `tname'(`currow',.), addrows(1, after)
+		`put' table `tname'(`currow',.), addrows(1, after) nosplit
 		local currow = `currow' + 1
 	}
 	`put' table `tname'(`currow',1) = (`"`alttext'"') `altoptions'
-	`put' table `tname'(`currow',.), `headerformat'
+	`put' table `tname'(`currow',.), `headerformat' nosplit
 	*`put' table `tname'(`currow',.), border(bottom,single)
 	if "`addheader'"=="" {
-		`put' table `tname'(`currow',.), addrows(1, after)
+		`put' table `tname'(`currow',.), addrows(1, after) nosplit
 		local currow = `currow' + 1
 	}
 }
@@ -377,11 +396,20 @@ else {
 		constat("`constat'") /// stats can be anything produced by -summ 
 		tabnumber(`tabnumber') /// table number
 		`header' `addheader' ///
+		`nodenominator' /// option to suppress denominator
 		pctfoverride(`pctfoverride') ///
 		confoverride(`confoverride')
 	local currow = r(currow)
 }
 
+if `newtable' {
+		if `initrows' > 1 {
+			local delrows = `initrows' - 1
+			forvalues i = 1/`=`delrows'' {
+				putdocx table `tname'(`=`currow'+1', .), drop
+			}
+		}
+}
 
 if "`r(nvaries)'"!="" {
 	di as error "The following variable(s) have non-missing counts that do not match the header shown in the table:"
@@ -433,5 +461,6 @@ return local binvar = "`binvar'"
 return local catvar = "`catvar'"
 return local convar = "`convar'"
 return local colvars = "`colvars'"
+return local tableoptions = "`tableoptions'"
 
 end

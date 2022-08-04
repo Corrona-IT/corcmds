@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 2.0.5  11nov2021}{...}
+{* *! version 2.0.6  04aug2022}{...}
 {vieweralsosee "corrona" "help corrona"}{...}
 {vieweralsosee "corcf" "help corcf"}{...}
 {vieweralsosee "corset" "help corset"}{...}
@@ -77,6 +77,7 @@ is 5{p_end}
 suppressed{p_end}
 {synopt :{cmd:counts}}request table containing counts of non-missing 
 observations{p_end}
+{synopt :{opt nodenom:inator}}suppress denominator Ns and categorical level counts{p_end}
 {synopt :{cmd:constat(}{it:{help cortable##statname:statname}} [{it:...}]{cmd:)}}statistics for continuous variables{p_end}
 {synopt :{opt confoverride(%fmt)}}override default continuous statistics format to {it:%fmt} {p_end}
 {synopt :{opt pctfoverride(%fmt)}}override default categorical statistics format to {it:%fmt} {p_end}
@@ -274,6 +275,20 @@ The default value is {cmd:n/a}.
 {phang}
 {opt counts} requests a table containing the count of non-missing observations
 for each variable in {it:varlist}.
+
+{phang}
+{opt nodenominator} suppresses denominator reporting for continuous and 
+categorical variables, and suppresses group counts for categorical variables.
+
+{phang}
+{opt confoverride(%fmt)} Overrides the format of continuous statistics to 
+{it:%fmt}. The default value is {it:%9.2fc}.
+
+{phang}
+{opt pctfoverride(%fmt)} Overrides the format of percentages for binary and
+categorical variables to {it:%fmt}. The default value is {it:%5.1f} for 
+percentages with absolute value greater than or equal to 1 and {it:%04.2f} for
+absolute values strictly less than 1.
 
 {phang}
 {* {cmd:statistics(}{it:statname} [{it:...}]{cmd:)}}
