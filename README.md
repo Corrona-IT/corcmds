@@ -4,7 +4,7 @@ The <b>corrona</b> suite of commands is a collection of internally-developed
 utilities to increase productivity in the Biostatistics department. 
 
 <p>These commands should not be used by those not employed by or affiliated 
-with Corrona LLC. Attempting to use them on non-Corrona resources without
+with CorEvitas LLC. Attempting to use them on non-CorEvitas resources without
 permission will result in an error or invalid results.</p>
 
 <h2>Available commands</h2>

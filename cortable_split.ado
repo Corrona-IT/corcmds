@@ -1,3 +1,4 @@
+*! v1.3.2  	04aug2022  PLakin
 *! v1.3.1  	11nov2021  PLakin
 *! v1.3  	07jul2020  RRaciborski
 program define cortable_split, rclass
