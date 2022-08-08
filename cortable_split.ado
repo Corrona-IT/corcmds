@@ -32,6 +32,7 @@ syntax [if] ///
 	TABNumber(string) /// table number, identifies data in file
 	PCTFoverride(string) /// percent format override for cat and binary
 	CONFoverride(string) /// continuous statistics format override
+	font(string) /// passing font through
 	]
 
 *v1.3: set suppress to suppress-1 so strictly less than specified (rar, 7/7/20)
@@ -590,6 +591,10 @@ while "``vi''"!="" {
     } 
 	local header
 	local vi = `vi' + 1 // increment variable, adding test comment
+}
+
+forvalues i = 1/`currow' {
+	putdocx table `tname'(`i',.), `font'
 }
 
 return local nvaries "`nvaries'"

@@ -372,6 +372,7 @@ if "`counts'"=="counts" {
 		colvars(`colvars') /// list of variables or factor variables for columns
 		tabnumber(`tabnumber') /// table number
 		// suppress(integer -1) // purposefully leaving this blank here
+		
 	
 	local currow = r(currow)
 }
@@ -395,7 +396,7 @@ else {
 		suppress(`suppress') /// when to supress cells for small size 
 		constat("`constat'") /// stats can be anything produced by -summ 
 		tabnumber(`tabnumber') /// table number
-		`header' `addheader' ///
+		`header' `addheader' font(`font') ///
 		`nodenominator' /// option to suppress denominator
 		pctfoverride(`pctfoverride') ///
 		confoverride(`confoverride')
