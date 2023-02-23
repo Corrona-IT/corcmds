@@ -280,7 +280,7 @@ if `newtable' {
 	local currow = 1
 }
 if !`newtable' {
-	`put' table `tname'(`currow',.), addrows(1, after) nosplit
+	`put' table `tname'(`currow',.), addrows(1, after) nosplit 
 	local currow = `currow' + 1
 }
 
