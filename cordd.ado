@@ -106,40 +106,25 @@ program cordd
     }
 
     descsave, norestore charlist(FormType /// char1 "Form Type"
-        FormSection /// char2 "Enrollment/Follow-up Section"
-        CDWvarname /// char3 "DW variable name"
-        note1 /// char4 "Question" 
-        ResponseType /// char5 "Response Type"
-        MaxChars /// char6 "Digit/character" length
-        Range ///  char 7 "Range"
-        FirstVersion /// char8 "Earliest Version"
-        LastVersion /// char9 "Last Version (if retired)"
-        RevisionDates /// char10 "Revision Dates"
-        EffectiveDate /// char11 -- not used in output
-        note2 /// char 12 "Important Notes"
-        note3 /// char 13 "Important Notes"
-        note4 /// char 14 "Important Notes"
-        note5 /// char 15 "Important Notes"
-        note6 /// char 16 "Important Notes"
-        note7 /// char 17 "Important Notes"
-        note8 /// char 18 "Important Notes"
-        note9 /// char 19 "Important Notes"
-        note10 /// char 20 "Important Notes"
+        note1 /// char2 "Question" 
+        Range ///  char 3 "Range"
+        note2 /// char 4 "Important Notes"
+        note3 /// char 5 "Important Notes"
+        note4 /// char 6 "Important Notes"
+        note5 /// char 7 "Important Notes"
+        note6 /// char 8 "Important Notes"
+        note7 /// char 9 "Important Notes"
+        note8 /// char 10 "Important Notes"
+        note9 /// char 11 "Important Notes"
+        note10 /// char 12 "Important Notes"
         ) 
 
     qui drop if name=="todrop"
      
-    label var char1 "Form Type"
-    label var char2 "Section"
-    label var char3 "DW Variable Name"
-    label var char4 "Question" 
-    label var char5 "Response Type"
-    label var char6 "Maximum Allowed Length"
-    label var char7 "Range"
-    label var char8 "Earliest Version"
-    label var char9 "Last Version (if retired)"
-    label var char10 "Revision Dates"
-    label var char12 "Important Notes"
+    label var char1 "Current CRF Form" // updated order2
+    label var char2 "Question Text" // updated order3
+    label var char3 "Analytic Range (Expected)"  //updated order6
+    label var char4 "Important Notes"
 
     sort vallab
     qui merge m:1 vallab using `"`tmp'"', nogenerate
@@ -147,42 +132,56 @@ program cordd
     sort order
     drop order
 
-    label var values "Variable code"
+    label var values "Analytic Variable code/values"  // order 5
+	label var varlab "Analytic Variable label"  //order 4
+	label var name "Analytic File Variable name"  // updated order1
+	label var format "Analytic Format" // updated order7
+	
+	// new variables
+	gen unit="" 
+	label var unit "Analytic Measurement Unit" // order8
+	
+	gen validation=""
+	label var validation "Analytic validation (Biostat QC)"  //order9
+	
+	
 
     qui {
         // replace semicolon delimiters with in-cell linebreak 
         replace values = subinstr(values,";","`=char(13)+char(10)'",.) 
          
-        order char1 char2 char3 name char4 char5 ///
-            varlab values char6 char7 format char8 char9 char10 char12
+        order name char1 char2 varlab values char3 format unit validation char4
 
-        replace format = "" if missing(char6) & char5!="date"
+	
+        *replace format = "" if missing(char6) & char5!="date"
         replace format = "string" if strpos(format,"s") & strpos(format,"%")
         replace format = "numeric" if strpos(format,"g") & strpos(format,"%")
 
 *v1.3.0: removed line causing notes to be added to revision date (rraciborski)
         *replace char10 = char10+", "+char12 if !missing(char10) & char8!="1"
 
-        replace char8 = "V"+char8
-        replace char9 = "V"+char9 if !missing(char9)
+        *replace char8 = "V"+char8
+        *replace char9 = "V"+char9 if !missing(char9)
 
-        forval i=13/20 {
+		
+        forval i=5/12 {
             count if !missing(char`i')
             if `r(N)'==0 drop char`i'
             else {
-                replace char12=char12+";"+char`i'
+                replace char4=char4+";"+char`i'
                 drop char`i'
+				
             }
         }
 
-        replace char12 = subinstr(char12,";","`=char(13)+char(10)'",.) 
+        replace char4 = subinstr(char4,";","`=char(13)+char(10)'",.) 
     }
-    drop char11 type
+    *drop char11 type
 
     if "`savedta'"!="" {
         qui {
             drop if name==""
-            keep char1-char12 
+            keep name-char4
             gen dta="`c(filename)'"
             replace dta=`"`using'"' if dta==""
             gen dtadate = .
@@ -203,7 +202,7 @@ program cordd
         }
     }
 
-    export excel char1-char12 using `"`saving'"' if name!="", `sheet' ///
+    export excel name-char4 using `"`saving'"' if name!="", `sheet' ///
         `replace' `sheetreplace' `sheetmodify' firstrow(varlabels)
 
 end
