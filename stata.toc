@@ -2,7 +2,7 @@
 v 2
 * packages title 
 d Corrona utilities
-d PR Lakin, R Raciborski, R Medeiros, N Guo
+d PR Lakin, R Raciborski, R Medeiros, N Guo, HJ Kang 
 d Distribution-Date: 20240205
 d 
 * available packages
