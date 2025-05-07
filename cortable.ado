@@ -50,7 +50,7 @@ local fullcmd `"`0'"'
 
 ********************************
 local user "`c(username)'"
-
+local user plakin
 mata: cortable_check()
 
 local rowvarlist `varlist'
