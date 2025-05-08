@@ -4,7 +4,9 @@
 *.dta
 *.xlsx
 *.xls
-*.stswap
+*.stswp
+*.DS_Store
 distinct.ado
 xcontract.ado
 xcontract.sthlp
+
