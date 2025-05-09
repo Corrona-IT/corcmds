@@ -219,6 +219,8 @@ while "``vi''"!="" {
 				
 				// calculate statistics for continuous variable
 				quietly summarize `var' if `touse'==1 & `cv'==1, detail
+				//summarize `var' if `touse'==1 & `cv'==1, detail
+				//ret list
 				local n : display %9.0fc r(N)
 				local n = trim("`n'")
 				
@@ -226,7 +228,7 @@ while "``vi''"!="" {
 					if r(N)<=`suppress' {
 					    if ~`nodenom'{
 						`put' table `tname'(`currow',`c') = ("N = `n'") ///
-							, nformat(%9.0fc) halign(center)
+							,  halign(center) // nformat(%9.0fc)
 						}
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("n") (r(N))  ("`tabnumber'")
@@ -236,7 +238,7 @@ while "``vi''"!="" {
 					else {
 					     if ~`nodenom'{
 						`put' table `tname'(`currow',`c') = ("N = `n'") ///
-							, nformat(%9.0fc) halign(center)
+							,  halign(center) //nformat(%9.0fc)
 						 }
 							if `post' {
 								post `handle' ("`var'") (-99) ("`cv'") ("n") (r(N))  ("`tabnumber'")
@@ -249,7 +251,7 @@ while "``vi''"!="" {
 
 					if `sup' {
 						`put' table `tname'(`=`currow'+`i'',`c') = ("`na'") ///
-							, nformat(%9.0fc) halign(center)
+							,  halign(center) // nformat(%9.0fc)
 					}
 					else {						
 						* mean, sd
@@ -447,7 +449,7 @@ while "``vi''"!="" {
 				local n = trim("`n'")
 				if ~`nodenom'{
 				`put' table `tname'(`currow',`c') = ("N = `n'"), ///
-					nformat(%9.0fc) halign(center)
+					 halign(center) // nformat(%9.0fc)
 				}
 				foreach i of local mylist {
 					quietly count if `var'==`i'&`touse'&`cvar'==1
@@ -540,7 +542,7 @@ while "``vi''"!="" {
 					*local j `subt`col''
 					if ~`nodenom' {
 					`put' table `tname'(`=`currow'-1',`col') = ("N = `n'"), ///
-						nformat(%9.0fc) halign(center)
+						 halign(center) // nformat(%9.0fc)
 					}
 					local nforgroup`col' = r(N)
 				}

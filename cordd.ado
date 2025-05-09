@@ -14,8 +14,8 @@ program cordd
 	    SAVEDta(string)       /// DTAsaving(<filename> , [replace|append])
         ] 
 
-    local user "`c(username)'"
-
+    //local user "`c(username)'"
+	local user plakin
     // data in memory or on disk? 
     if "`using'"=="" {
         unab varlist : `anything'
